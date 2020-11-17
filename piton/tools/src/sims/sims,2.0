@@ -163,6 +163,7 @@ Getopt::Long::Configure ('no_auto_abbrev') ;
         'midas_use_tgseed' => 0,
         'model' => "",
         'model_dir' => "",
+        'gpcore' => 0,
         'msm_build' => 0,
         'msm_build_args' => [],
         'msm_run' => 0,
@@ -331,6 +332,7 @@ GetOptions (\%opt,
             'diaglist_cpp_args=s@',
             'group=s@',
             'model_dir=s',
+            'gpcore!',
             'parallel!',
             'ost1!',
             'ariane!',
@@ -363,6 +365,7 @@ if (!$opt{pico} && !$opt{ariane}) {
 push (@{$opt{config_cpp_args}}, "-DFLIST_OST1")     if ($opt{ost1} || $opt{pico_het}) ;
 push (@{$opt{config_cpp_args}}, "-DFLIST_PICO")     if ($opt{pico} || $opt{pico_het}) ;
 push (@{$opt{config_cpp_args}}, "-DFLIST_ARIANE")   if ($opt{ariane}) ;
+push (@{$opt{config_cpp_args}}, "-DFLIST_GPCORE")   if ($opt{gpcore}) ;
 push (@{$opt{config_cpp_args}}, "-DFLIST_ORAM")     if ($opt{oram}) ;
 
 ################################################################################
@@ -2278,7 +2281,7 @@ sub assemble_diag
     if ($opt{rv32}) {
       # RISCV flow for RV32
       if (!$opt{rv32_target_triple}) {
-        if ($opt{pico}) {
+        if ($opt{pico} || $opt{gpcore}) {
           $ENV{RV32_TARGET_TRIPLE} = "riscv32-unknown-elf" ;
         }
       } else {
@@ -2288,11 +2291,14 @@ sub assemble_diag
         if ($opt{pico}) {
           $ENV{RV32_MARCH} = "rv32ima" ;
         }
+        if ($opt{gpcore}) {
+          $ENV{RV32_MARCH} = "rv32im" ;
+        }
       } else {
         $ENV{RV32_MARCH} = $opt{rv32_march} ;
       }
       if (!$opt{rv32_mabi}) {
-        if ($opt{pico}) {
+        if ($opt{pico} || $opt{gpcore}) {
           $ENV{RV32_MABI} = "ilp32" ;
         }
       } else {
@@ -2733,7 +2739,7 @@ sub parse_args
     $opt{sparcv9} = 1 ;
     print "$prg: Building/running for sparcv9\n" ;
   }
-  if ($opt{pico}) {
+  if ($opt{pico} || $opt{gpcore}) {
     $opt{rv32} = 1 ;
     print "$prg: Building/running for rv32\n" ;
   }
@@ -2805,12 +2811,14 @@ sub parse_args
   $ENV{PITON_PICO}     = $opt{pico};
   $ENV{PITON_PICO_HET} = $opt{pico_het};
   $ENV{PITON_ARIANE}   = $opt{ariane};
+  $ENV{PITON_GPCORE}   = $opt{gpcore};
   push (@{$opt{config_rtl}}, "PITON_OST1")     if ($opt{ost1});
   push (@{$opt{config_rtl}}, "PITON_PICO")     if ($opt{pico});
   push (@{$opt{config_rtl}}, "PITON_PICO")     if ($opt{pico_het});
   push (@{$opt{config_rtl}}, "PITON_PICO_HET") if ($opt{pico_het});
   push (@{$opt{config_rtl}}, "PITON_ARIANE")   if ($opt{ariane});
   push (@{$opt{config_rtl}}, "WT_DCACHE")      if ($opt{ariane});
+  push (@{$opt{config_rtl}}, "PITON_GPCORE")   if ($opt{gpcore});
 
   my $pton_x_tiles="";
   my $pton_y_tiles="";
@@ -2842,6 +2850,8 @@ sub parse_args
         push (@{$opt{config_rtl}}, "RTL_PICO" . $i);
     } elsif ($opt{ariane}) {
         push (@{$opt{config_rtl}}, "RTL_ARIANE" . $i);
+    } elsif ($opt{gpcore}) {
+        push (@{$opt{config_rtl}}, "RTL_GPCORE" . $i);
     } elsif ($opt{ost1}) {
         push (@{$opt{config_rtl}}, "RTL_SPARC" . $i);
     }
