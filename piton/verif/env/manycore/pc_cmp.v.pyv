@@ -256,7 +256,7 @@ endtask // get_thread_status
                     spc0_inst_done <= `PICO_CORE0.launch_next_insn;
                     spc0_phy_pc_w <= {{16{`PICO_CORE0.reg_pc[31]}}, `PICO_CORE0.reg_pc[31:0]};
                 end
-                `else // RTL_ARIANE0
+        `else // RTL_GPCORE
         `ifdef RTL_GPCORE
                 assign spc0_thread_id = 2'b00;
                 assign spc0_rtl_pc = spc0_phy_pc_w;
@@ -280,7 +280,7 @@ endtask // get_thread_status
         `endif // RTL_PICO0
         `endif // RTL_ARIANE0
         `endif // RTL_SPARC0
-        `endif //RTL_GPCORE
+       
         '''
     pattern = ["SPARC0", "PATH0", "spc0", "sas_m0", "pcs0", "pcf0", "pcd0", "pce0", \
                 "IFQDP0", "DTUPATH0", "PICO_CORE0", "ARIANE_CORE0", "active_thread[(0"];

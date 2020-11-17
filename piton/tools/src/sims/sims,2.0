@@ -1552,7 +1552,7 @@ sub generic_sim_build
       $build_cmd .= "--top-module cmp_top " ;
       $build_cmd .= "-Wno-fatal " ;
       $build_cmd .= "-Wno-BLKANDNBLK " ;
-      $build_cmd .= "-Wno-TIMESCALEMOD " ;
+      
       $build_cmd .= "-DPITON_DPI " ;
       $build_cmd .= "--unroll-count 256 " ;
       $build_cmd .= "-CFLAGS -DVERILATOR " ;
@@ -1853,6 +1853,7 @@ if ($opt{riv_run}) {
     if ($opt{vlt_run}) {
       $cmd .= "$model_path/obj_dir/Vcmp_top " ;
       $cmd .= " " ;
+      $cmd .= " -vcd ";
       $cmd .= join (" ", @{$opt{sim_run_args}}) ;
     }
 

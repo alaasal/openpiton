@@ -1101,7 +1101,7 @@ if (TILE_TYPE == `GPCORE_TILE) begin : g_gpcore_core
         .l15_transducer_data_2              (l15_transducer_data_2),
         .l15_transducer_data_3              (l15_transducer_data_3),
 
-        .transducer_l15_req_ack             (transducer_l15_req_ack),
+        .transducer_l15_req_ack             (transducer_l15_req_ack)
     );
 
 
