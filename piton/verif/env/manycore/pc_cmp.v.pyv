@@ -256,14 +256,14 @@ endtask // get_thread_status
                     spc0_inst_done <= `PICO_CORE0.launch_next_insn;
                     spc0_phy_pc_w <= {{16{`PICO_CORE0.reg_pc[31]}}, `PICO_CORE0.reg_pc[31:0]};
                 end
-        `else // RTL_GPCORE
+        `else // RTL_PICO0
         `ifdef RTL_GPCORE
                 assign spc0_thread_id = 2'b00;
                 assign spc0_rtl_pc = spc0_phy_pc_w;
 
                 always @*
                 begin
-                    if (`GPCORE_CORE0.wake_up == 1'b1)
+                    if (`GPCORE_CORE0.frontend.wake_up == 1'b1)
                     begin
                         active_thread[(0*4)] = 1'b1;
                         active_thread[(0*4)+1] = 1'b1;
@@ -276,7 +276,7 @@ endtask // get_thread_status
                     spc0_inst_done <= `GPCORE_CORE0.pc6Commit;
                     spc0_phy_pc_w <= {{16{`PICO_CORE0.pc6Commit[31]}}, `GPCORE_CORE0.pc6Commit};
                 end
-        `endif // RTL_PICO0
+        `endif // RTL_GPCORE
         `endif // RTL_PICO0
         `endif // RTL_ARIANE0
         `endif // RTL_SPARC0
