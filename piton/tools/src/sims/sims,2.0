@@ -2293,7 +2293,7 @@ sub assemble_diag
           $ENV{RV32_MARCH} = "rv32ima" ;
         }
         if ($opt{gpcore}) {
-          $ENV{RV32_MARCH} = "rv32im" ;
+          $ENV{RV32_MARCH} = "rv32ima" ;
         }
       } else {
         $ENV{RV32_MARCH} = $opt{rv32_march} ;

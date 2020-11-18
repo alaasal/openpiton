@@ -1110,33 +1110,34 @@ if (TILE_TYPE == `GPCORE_TILE) begin : g_gpcore_core
 end
 endgenerate
 
-logic transducer_l15_amo_op_0;
-logic transducer_l15_nc_0;
-logic transducer_l15_invalall_0;
-logic transducer_l15_threadid_0;
-logic transducer_l15_prefetch_0;
-logic transducer_l15_blockstore_0;
-logic transducer_l15_blockinitstore_0;
-logic transducer_l15_l1rplway_0;
-logic transducer_l15_invalidate_cacheline_0;
-logic transducer_l15_csm_data_0;
-logic transducer_l15_data_next_entry_0;
-logic l15_transducer_l2miss_0;
-logic l15_transducer_error_0;
-logic l15_transducer_noncacheable_0;
-logic l15_transducer_atomic_0;
-logic l15_transducer_threadid_0;
-logic l15_transducer_prefetch_0;
-logic l15_transducer_f4b_0;
-logic l15_transducer_inval_icache_all_way_0;
-logic l15_transducer_inval_dcache_all_way_0;
-logic l15_transducer_cross_invalidate_0;
-logic l15_transducer_cross_invalidate_way_0;
-logic l15_transducer_inval_dcache_inval_0;
-logic l15_transducer_inval_icache_inval_0;
-logic l15_transducer_inval_way_0;
-logic l15_transducer_blockinitstore_0;
+reg transducer_l15_amo_op_0;
+reg transducer_l15_nc_0;
+reg transducer_l15_invalall_0;
+reg transducer_l15_threadid_0;
+reg transducer_l15_prefetch_0;
+reg transducer_l15_blockstore_0;
+reg transducer_l15_blockinitstore_0;
+reg transducer_l15_l1rplway_0;
+reg transducer_l15_invalidate_cacheline_0;
+reg transducer_l15_csm_data_0;
+reg transducer_l15_data_next_entry_0;
+reg l15_transducer_l2miss_0;
+reg l15_transducer_error_0;
+reg l15_transducer_noncacheable_0;
+reg l15_transducer_atomic_0;
+reg l15_transducer_threadid_0;
+reg l15_transducer_prefetch_0;
+reg l15_transducer_f4b_0;
+reg l15_transducer_inval_icache_all_way_0;
+reg l15_transducer_inval_dcache_all_way_0;
+reg l15_transducer_cross_invalidate_0;
+reg l15_transducer_cross_invalidate_way_0;
+reg l15_transducer_inval_dcache_inval_0;
+reg l15_transducer_inval_icache_inval_0;
+reg l15_transducer_inval_way_0;
+reg l15_transducer_blockinitstore_0;
 
+//HARDWIRING ALL UNUSED L15 PORTS TO 0
 always @(posedge spc_grst_l)
 begin
 transducer_l15_amo_op_0 <= 0;
@@ -1167,6 +1168,17 @@ l15_transducer_inval_way_0<= 0;
 l15_transducer_blockinitstore_0<= 0;
 end
 
+// RESET SIGNAL GENERATOR
+reg reset_l_f;
+reg reset_l_ff;
+reg reset_l_fff;
+always @ (posedge clk_gated)
+begin
+    reset_l_f <= rst_n_f;
+    reset_l_ff <= reset_l_f;
+    reset_l_fff <= reset_l_ff;
+    spc_grst_l <= reset_l_fff;
+end
 
 
     //////////
@@ -1179,7 +1191,7 @@ end
 
         .transducer_l15_rqtype              (transducer_l15_rqtype),
         .transducer_l15_amo_op              (transducer_l15_amo_op_0),
-        .transducer_l15_nc                  (transducer_l15_nc),
+        .transducer_l15_nc                  (transducer_l15_nc_0),
         .transducer_l15_size                (transducer_l15_size),
         // .pcxdecoder_l15_invalall         (transducer_l15_invalall_0),
         .transducer_l15_threadid            (transducer_l15_threadid_0),
