@@ -358,7 +358,7 @@ die ("DIE. -pico and -pico_het cannot both be set") if ($opt{pico} && $opt{pico_
 
 # Setting ost1 by default. This works better than default to 1
 # for heterogeneous-ISA stuff
-if (!$opt{pico} && !$opt{ariane}) {
+if (!$opt{pico} && !$opt{ariane} && !$opt{gpcore}  ) {
   $opt{ost1} = 1 ;
 }
 
@@ -2278,12 +2278,13 @@ sub assemble_diag
       close (DIAGIN) ;
     }
 
+
     # Choose compilation flow based on ISA
     if ($opt{rv32}) {
-      # RISCV flow for RV32
+      # RISCV flow for RV32 
       if (!$opt{rv32_target_triple}) {
         if ($opt{pico} || $opt{gpcore}) {
-          $ENV{RV32_TARGET_TRIPLE} = "riscv32-unknown-elf" ;
+          $ENV{RV32_TARGET_TRIPLE} = "riscv64-unknown-elf" ;
         }
       } else {
         $ENV{RV32_TARGET_TRIPLE} = $opt{rv32_target_triple} ;
@@ -2740,7 +2741,7 @@ sub parse_args
     $opt{sparcv9} = 1 ;
     print "$prg: Building/running for sparcv9\n" ;
   }
-  if ($opt{pico} || $opt{gpcore}) {
+  if ($opt{gpcore}) {
     $opt{rv32} = 1 ;
     print "$prg: Building/running for rv32\n" ;
   }
