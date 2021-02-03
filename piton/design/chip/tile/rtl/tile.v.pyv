@@ -1170,14 +1170,15 @@ end
 reg reset_l_f;
 reg reset_l_ff;
 reg reset_l_fff;
+reg spc_grst_l_reg;
 always @ (posedge clk_gated)
 begin
     reset_l_f <= rst_n_f;
     reset_l_ff <= reset_l_f;
     reset_l_fff <= reset_l_ff;
-    spc_grst_l <= reset_l_fff;
+    spc_grst_l_reg <= reset_l_fff;
 end
-
+assign spc_grst_l = spc_grst_l_reg;
 
     //////////
     // L1.5 //
