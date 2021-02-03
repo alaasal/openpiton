@@ -257,7 +257,7 @@ endtask // get_thread_status
                     spc0_phy_pc_w <= {{16{`PICO_CORE0.reg_pc[31]}}, `PICO_CORE0.reg_pc[31:0]};
                 end
         `else // RTL_PICO0
-        `ifdef RTL_GPCORE
+   
                 assign spc0_thread_id = 2'b00;
                 assign spc0_rtl_pc = spc0_phy_pc_w;
 
@@ -274,9 +274,9 @@ endtask // get_thread_status
 
                 always @(posedge clk) begin
                     spc0_inst_done <= `GPCORE_CORE0.pc6Commit;
-                    spc0_phy_pc_w <= {{16{`PICO_CORE0.pc6Commit[31]}}, `GPCORE_CORE0.pc6Commit};
+                    spc0_phy_pc_w <= {{16{`GPCORE_CORE0.pc6Tmp[31]}}, `GPCORE_CORE0.pc6Tmp};
                 end
-        `endif // RTL_GPCORE
+      
         `endif // RTL_PICO0
         `endif // RTL_ARIANE0
         `endif // RTL_SPARC0
